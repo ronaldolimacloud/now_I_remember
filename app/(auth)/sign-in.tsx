@@ -1,41 +1,44 @@
-// Import necessary components and hooks
-// Authenticator is AWS Amplify's pre-built authentication UI component
+// Import the Authenticator component from AWS Amplify's UI library for React Native.
+// This component provides a ready-made user authentication interface (such as sign in, sign up, and password recovery).
 import { Authenticator } from '@aws-amplify/ui-react-native';
-// View is a basic container component from React Native, similar to a <div> in web
+
+// Import the View component from React Native.
+// View works like a container or box and is used to layout other components on the screen.
 import { View } from 'react-native';
-// Custom hook to detect if the user's device is in dark or light mode
+
+// Import a custom hook named useColorScheme.
+// This hook checks if the device is using a dark mode or light mode, which helps to set the correct background color.
 import { useColorScheme } from '@/hooks/useColorScheme';
-// Redirect is used for navigation - it will automatically redirect users to another screen
+
+// Import the Redirect component from Expo Router.
+// Redirect lets the app automatically navigate to another screen when needed.
 import { Redirect } from 'expo-router';
+
+// Import React so we can use React's features to create components.
 import React from 'react';
 
-// Define the main SignIn component
+// Define a functional component called SignIn.
+// This component is responsible for showing the sign-in interface and handling user authentication.
 export default function SignIn() {
-  // Get the current color scheme (dark or light mode) from the user's device
-  // This will be used to set appropriate background colors
+  // Use the custom useColorScheme hook to get the current color mode ('dark' or 'light').
+  // The result will be used to determine the background color of our app.
   const colorScheme = useColorScheme();
 
+  // The component returns a user interface.
+  // We wrap everything inside a View component to define the layout and apply styling.
   return (
-    // Main container View
-    // The style object sets:
-    // - flex: 1 (takes up all available space)
-    // - backgroundColor: changes based on dark/light mode
+    // The View component acts as a container that fills the entire screen (flex: 1).
+    // It sets its background color to black if the device is in dark mode, or white if in light mode.
     <View style={{ flex: 1, backgroundColor: colorScheme === 'dark' ? '#000' : '#fff' }}>
-      {/* 
-        Authenticator component from AWS Amplify:
-        - Provides a complete authentication UI out of the box
-        - Handles sign-in, sign-up, forgot password, etc.
-        - Manages the authentication state
+      {/*
+        The Authenticator component comes from AWS Amplify.
+        It handles the authentication flow (like signing in or signing up) without needing extra code.
       */}
       <Authenticator>
-        {/* 
-          This is a render prop function that gets called when authentication is successful
-          - It receives the user object containing the authenticated user's information
-          - The Record<string, any> type means user is an object with string keys and any values
-        */}
         {(props: { user: Record<string, any> }) => {
-          // When user is authenticated, redirect them to the main app tabs
-          // The '/(tabs)' route is defined in your app's tab navigation
+          // The function passed as a child to the Authenticator is called once the user has been authenticated.
+          // 'props' contains information about the authenticated user.
+          // Once the user is signed in, we use the Redirect component to navigate them to the main tabs screen.
           return <Redirect href="/(tabs)" />;
         }}
       </Authenticator>
